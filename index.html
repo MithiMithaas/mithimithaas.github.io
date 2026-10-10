@@ -195,6 +195,8 @@ html.intro #loader{display:flex}
 .hint i{width:1px;height:36px;background:linear-gradient(var(--saff),transparent);transform-origin:top;animation:drip 1.8s ease-in-out infinite}
 @keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
 .word{display:inline-block;white-space:nowrap}.char{display:inline-block;text-align:center}
+#menu h2 em{position:relative}
+.ul{position:absolute;left:0;right:0;bottom:-.04em;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--saff),var(--mar));transform:scaleX(0);transform-origin:left}
 html.gl .art{display:none}
 html.gl .hero{display:block;position:relative;max-width:640px;margin:clamp(40px,14vh,140px) auto 12vh max(16px,calc((100% - 1100px)/2 + 18px));padding:clamp(24px,4vw,46px);border-radius:28px;background:linear-gradient(135deg,rgba(255,253,246,.88),rgba(255,240,212,.68));border:1px solid rgba(232,137,43,.3);backdrop-filter:blur(10px) saturate(140%);-webkit-backdrop-filter:blur(10px) saturate(140%);box-shadow:0 30px 70px rgba(140,47,43,.16),inset 0 1px 0 rgba(255,255,255,.9)}
 html.gl .hero::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,137,43,.7),transparent)}
@@ -569,6 +571,17 @@ function decode(el,d){(el._tw||[]).forEach(t=>t.kill());el._tw=[];
   onUpdate:()=>{const ok=o.p>.8;c.textContent=ok?c.dataset.c:GL[(Math.random()*GL.length)|0];c.style.color=ok?'':'var(--saff)'},
   onComplete:()=>{c.textContent=c.dataset.c;c.style.color=''}}))})}
 
+/* ---- unique heading styles: curtain (band) and cascade (menu) ---- */
+function curtain(el,d){const ch=el._c,words=el.querySelectorAll('.word'),em=el.querySelector('em');
+ gsap.set(ch,{opacity:1});el.style.clipPath='inset(0)';
+ gsap.fromTo(words,{yPercent:120,rotate:5,opacity:0},{yPercent:0,rotate:0,opacity:1,duration:1.1,ease:'power4.out',stagger:.13,delay:d,clearProps:'transform,opacity',onComplete:()=>{el.style.clipPath=''}});
+ if(em)gsap.fromTo(em,{textShadow:'0 0 0 rgba(232,137,43,0)'},{textShadow:'0 0 24px rgba(232,137,43,.85)',duration:.6,yoyo:true,repeat:1,delay:d+1.1,clearProps:'textShadow'})}
+function cascade(el,d){const ch=el._c,em=el.querySelector('em');
+ gsap.fromTo(ch,{opacity:0,y:()=>gsap.utils.random(-70,-30),scale:.3,rotation:()=>gsap.utils.random(-30,30),filter:'blur(6px)'},
+  {opacity:1,y:0,scale:1,rotation:0,filter:'blur(0px)',duration:.9,ease:'back.out(2.2)',stagger:.045,delay:d,clearProps:'filter,transform'});
+ if(em){let u=em.querySelector('.ul');if(!u){u=D.createElement('i');u.className='ul';u.setAttribute('aria-hidden','true');em.appendChild(u)}
+  gsap.fromTo(u,{scaleX:0},{scaleX:1,duration:.9,ease:'power3.out',delay:d+1.1})}}
+
 /* ---- section changes: warp pulse, sweep line, dots ---- */
 const secs=[D.querySelector('.hero'),D.getElementById('menu'),D.getElementById('order')],dots=[...D.querySelectorAll('.dots button')],hint=D.querySelector('.hint');
 const tints=[C(0xe8892b),C(0xf2b24c),C(0x8c2f2b)];let cur=-1;
@@ -586,7 +599,7 @@ function heroIn(){const h=secs[0],kids='.hero .eyebrow,.hero p,.hero .row,.hero 
 function start(){
  HE.classList.remove('intro');
  secs.forEach((s,i)=>ScrollTrigger.create({trigger:s,start:'top 55%',end:'bottom 45%',onEnter:()=>go(i),onEnterBack:()=>go(i)}));
- heads.slice(1).forEach(h=>{const r=()=>{if(h._d)return;h._d=1;decode(h,.05)};ScrollTrigger.create({trigger:h,start:'top 88%',onEnter:r,onLeave:r,onEnterBack:r})});
+ heads.slice(1).forEach(h=>{const r=()=>{if(h._d)return;h._d=1;(h.closest('.band')?curtain:h.closest('#menu')?cascade:decode)(h,.05)};ScrollTrigger.create({trigger:h,start:'top 88%',onEnter:r,onLeave:r,onEnterBack:r})});
  ScrollTrigger.create({trigger:'#menu',start:'top 70%',end:'bottom 30%',onToggle:s=>{calm=s.isActive;gsap.to('#webgl',{opacity:s.isActive?.3:1,duration:.8,overwrite:true})}});
  ScrollTrigger.create({trigger:D.body,start:0,end:'max',onUpdate:s=>{scrollV=s.getVelocity()}});
  addEventListener('scroll',()=>hint.classList.toggle('on',scrollY<80),{passive:true});
