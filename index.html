@@ -278,6 +278,12 @@ html.hp .chip.on{background:transparent;box-shadow:none}
 .rb{background-image:linear-gradient(100deg,#c0408c 35%,#f7b6d8 50%,#c0408c 65%)}.rf{background-image:linear-gradient(100deg,#9a6a08 35%,#f6d27a 50%,#9a6a08 65%)}
 @keyframes rshine{from{background-position:120% 0}to{background-position:-120% 0}}
 @media(prefers-reduced-motion:reduce){.mqt,.rib{animation:none}}
+/* ===== swipeable category tabs + delayed WhatsApp ===== */
+.chips{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto}
+.chips::after{content:'';flex:0 0 14px}
+.chips.fr{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
 </style>
 <script>(function(){var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('intro');
 setTimeout(function(){if(!window.__ready){var l=document.getElementById('loader');if(l)l.style.display='none';d.classList.remove('intro');if(window.__show)window.__show()}},8000)})();
@@ -350,7 +356,7 @@ setTimeout(function(){if(!window.__ready){var l=document.getElementById('loader'
   <a class="btn" id="wa" href="#" target="_blank" rel="noopener">Send order on WhatsApp ↗</a>
   <div class='note'>2 days notice for 1 kg · 5 days for more than 1 kg.</div>
   </div>
-  <div id='ok'><div class='tick'>✓</div><h3 class='serif'>Almost there!</h3><p>WhatsApp has opened with your order <b id='oid'></b>.<br><b>Please press Send</b> there so Mithi Mithaas receives it.</p><a class='btn' id='wa2' href='#' target='_blank' rel='noopener'>Open WhatsApp again ↗</a><button class='btn alt' id='cp'>Copy order text</button><button class='btn alt' id='nw'>I've sent it – start new order</button></div>
+  <div id='ok'><div class='tick'>✓</div><h3 class='serif'>Almost there!</h3><p>Your order <b id='oid'></b> is ready! <span id='cdw'>Opening WhatsApp in <b id='cd'>3</b>…</span><br><b>Please press Send</b> there so Mithi Mithaas receives it.</p><a class='btn' id='wa2' href='#' target='_blank' rel='noopener'>Open WhatsApp now ↗</a><button class='btn alt' id='cp'>Copy order text</button><button class='btn alt' id='nw'>I've sent it – start new order</button></div>
 </div></div>
 
 <div id='toast'></div>
@@ -864,6 +870,31 @@ function shower(){if(RM||!HAS)return;var H=innerHeight,W=innerWidth;
    {duration:2200+Math.random()*1600,delay:Math.random()*700,easing:'cubic-bezier(.3,.1,.5,1)',fill:'both'}).onfinish=function(){p.remove()}})(n)}
 var pan=D.getElementById('pan');
 if(pan)new MutationObserver(function(){var on=pan.classList.contains('sent');if(on&&!pan._s){pan._s=1;shower()}else if(!on)pan._s=0}).observe(pan,{attributes:true,attributeFilter:['class']});
+})();
+</script>
+<script>
+(function(){
+var D=document,RM=matchMedia('(prefers-reduced-motion: reduce)').matches,HAS=!!Element.prototype.animate;
+
+/* ---- category tabs: swipe sideways, fade hint on the right, keep the chosen tab in view ---- */
+var c=D.getElementById('chips'),first=true;
+function fade(){if(c)c.classList.toggle('fr',c.scrollLeft+c.clientWidth<c.scrollWidth-6)}
+if(c){c.addEventListener('scroll',fade,{passive:true});addEventListener('resize',fade);
+ var _c3=chips;chips=function(){_c3();var a=c.querySelector('.chip.on');
+  if(a&&!first)c.scrollTo({left:Math.max(0,a.offsetLeft-(c.clientWidth-a.offsetWidth)/2),behavior:'smooth'});
+  first=false;fade()};chips();setTimeout(fade,300)}
+
+/* ---- WhatsApp opens after a short pause so the customer sees the petal celebration ---- */
+var wa=D.getElementById('wa'),wa2=D.getElementById('wa2'),cd=D.getElementById('cd'),cdw=D.getElementById('cdw'),iv,st;
+function openWA(u){var w=null;try{w=window.open(u,'_blank')}catch(x){}if(!w)location.href=u}
+function done(){clearInterval(iv);clearTimeout(st);if(cdw)cdw.textContent='WhatsApp is open \u2013'}
+if(wa)wa.addEventListener('click',function(e){
+ if(e.defaultPrevented||RM||!HAS||wa._w)return;
+ e.preventDefault();wa._w=1;var u=wa.href;
+ st=setTimeout(function(){var n=3;if(cd)cd.textContent=n;
+  iv=setInterval(function(){n--;if(n>0){if(cd)cd.textContent=n}else{done();openWA(u);wa._w=0}},1000)},400)});
+if(wa2)wa2.addEventListener('click',function(){done();wa._w=0});
+var nw=D.getElementById('nw');if(nw)nw.addEventListener('click',function(){done();wa._w=0;if(cdw)cdw.innerHTML='Opening WhatsApp in <b id="cd">3</b>\u2026';cd=D.getElementById('cd')});
 })();
 </script>
 </body>
