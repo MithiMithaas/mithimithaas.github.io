@@ -252,6 +252,32 @@ footer{background:linear-gradient(180deg,var(--bg2),#f7cfe0)}
 #wa,#wa2{background:#4f7347}
 .dots button:nth-child(1).on{background:#c0408c;border-color:#c0408c}.dots button:nth-child(2).on{background:#9a6a08;border-color:#9a6a08}.dots button:nth-child(3).on{background:#4f7347;border-color:#4f7347}
 .tick,.btn.okb{background:#6f7014}
+/* add-to-cart flight + petal burst */
+.fly,.pt{position:fixed;left:0;top:0;pointer-events:none;z-index:90}
+.fly{width:28px;height:28px;margin:-14px 0 0 -14px}
+.fly i{display:block;width:100%;height:100%;box-shadow:0 4px 10px rgba(0,0,0,.25)}
+.pt{width:11px;height:15px;margin:-7px 0 0 -5px;border-radius:50% 0 50% 50%}
+/* ===== extra effects: pill tabs, ripple, mascot, strips, ribbons ===== */
+.rpl{position:absolute;border-radius:50%;background:currentColor;pointer-events:none}
+.chip,.qty button{position:relative;overflow:hidden}
+.chip{z-index:1}
+.pill{position:absolute;z-index:0;border-radius:99px;pointer-events:none;box-shadow:0 6px 18px rgba(112,25,112,.28)}
+html.hp .chip.on{background:transparent;box-shadow:none}
+.chip.on.wait{color:var(--text)}
+.roll{position:absolute;left:0;top:100%;margin-top:-5px;width:24px;height:24px;border-radius:50%;z-index:2;pointer-events:none;background:radial-gradient(circle at 35% 30%,#f2a04a,#d9731c 70%,#a8500f);box-shadow:0 3px 6px rgba(0,0,0,.28)}
+.roll::after{content:'';position:absolute;left:6px;top:7px;width:4px;height:4px;border-radius:50%;background:#9d9e1a;box-shadow:9px 3px 0 #ecb54d,3px 9px 0 #ecb54d,10px 10px 0 #9d9e1a}
+.mq{overflow:hidden;padding:13px 0;color:#fff;font:600 .95rem 'DM Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.mq1{background:linear-gradient(90deg,#c0408c,#d4559f,#c0408c)}.mq2{background:linear-gradient(90deg,#6f7014,#80821a,#6f7014)}
+.mqt{display:inline-flex;white-space:nowrap;animation:mq 48s linear infinite}.mq2 .mqt{animation-duration:58s;animation-direction:reverse}
+.mq:hover .mqt{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-50%)}}
+.mqt span::before{content:'';display:inline-block;width:9px;height:9px;border-radius:50%;margin:0 18px 1px 20px;background:#ecb54d}
+.mqt span:nth-child(3n+2)::before{background:#fff}.mqt span:nth-child(3n)::before{background:#f7b6d8}
+.pt.big{width:14px;height:19px;margin:-9px 0 0 -7px}
+.rib{position:absolute;top:-10px;right:14px;z-index:2;padding:4px 11px;border-radius:6px;font:700 .64rem 'DM Sans',sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#fff;pointer-events:none;background-size:220% 100%;animation:rshine 3s linear infinite}
+.rb{background-image:linear-gradient(100deg,#c0408c 35%,#f7b6d8 50%,#c0408c 65%)}.rf{background-image:linear-gradient(100deg,#9a6a08 35%,#f6d27a 50%,#9a6a08 65%)}
+@keyframes rshine{from{background-position:120% 0}to{background-position:-120% 0}}
+@media(prefers-reduced-motion:reduce){.mqt,.rib{animation:none}}
 </style>
 <script>(function(){var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('intro');
 setTimeout(function(){if(!window.__ready){var l=document.getElementById('loader');if(l)l.style.display='none';d.classList.remove('intro');if(window.__show)window.__show()}},8000)})();
@@ -274,6 +300,7 @@ setTimeout(function(){if(!window.__ready){var l=document.getElementById('loader'
 </section>
 <div class="band"><h2>Some things taste like <em>home.</em></h2><p>That's the feeling we're here to make.</p></div>
 
+<div class='mq mq1' aria-hidden='true'><div class='mqt'><span>Modak</span><span>Mohanthal</span><span>Kesar Peda</span><span>Gorpapdi</span><span>Finia Laddoo</span><span>Dink Laddoo</span><span>Boondi Laddoo</span><span>Kalakand</span><span>Milk Cake</span><span>Karachi Halwa</span><span>Dryfruit Pak</span><span>Malai Peda</span><span>Modak</span><span>Mohanthal</span><span>Kesar Peda</span><span>Gorpapdi</span><span>Finia Laddoo</span><span>Dink Laddoo</span><span>Boondi Laddoo</span><span>Kalakand</span><span>Milk Cake</span><span>Karachi Halwa</span><span>Dryfruit Pak</span><span>Malai Peda</span></div></div>
 <div class='w steps'><div><b>1 · Choose</b>Pick your sweets and quantity</div><div><b>2 · Add details</b>Your name, phone and address</div><div><b>3 · Send</b>One tap sends your order to us on WhatsApp</div></div>
 <section class="sec w" id="menu">
   <div class="eyebrow">A little of everything</div>
@@ -284,6 +311,7 @@ setTimeout(function(){if(!window.__ready){var l=document.getElementById('loader'
   <div id="list"></div>
 </section>
 
+<div class='mq mq2' aria-hidden='true'><div class='mqt'><span>Besan Laddoo</span><span>Churma Laddoo</span><span>Anjeer Pak</span><span>Badampak</span><span>Khajoor Pak</span><span>Dodha Burfi</span><span>Gulkand Peda</span><span>Chocolate Rocks</span><span>Dryfruit Barks</span><span>Cake Balls</span><span>Millet Laddoo</span><span>Sugar-free Bites</span><span>Besan Laddoo</span><span>Churma Laddoo</span><span>Anjeer Pak</span><span>Badampak</span><span>Khajoor Pak</span><span>Dodha Burfi</span><span>Gulkand Peda</span><span>Chocolate Rocks</span><span>Dryfruit Barks</span><span>Cake Balls</span><span>Millet Laddoo</span><span>Sugar-free Bites</span></div></div>
 <section class="dark" id="order"><div class="w">
   <div class="eyebrow">Made just for your moment</div>
   <h2 style="font-size:2.4rem;margin:6px 0">Let's make it <em>a little sweeter.</em></h2>
@@ -754,6 +782,89 @@ if(btn){const qx=gsap.quickTo(btn,'x',{duration:.5,ease:'power3.out'}),qy=gsap.q
    .to('#iris',{clipPath:`circle(0px at ${x}px ${y}px)`,duration:1,ease:'power3.out'})
    .to(dive,{v:0,duration:1.1,ease:'expo.out'},'<')})}
 }})();
+</script>
+<script>
+(function(){
+if(!Element.prototype.animate)return;
+var RM=matchMedia('(prefers-reduced-motion: reduce)'),P=['#ef97bb','#e066ae','#ecb54d','#e05459','#9b4bb0','#f7b6d8'];
+var L={'Pedas & Milk Sweets':['radial-gradient(circle at 35% 30%,#fbe6c8,#c89a5e)','50%','scaleY(.72)'],'Sugar-Free':['linear-gradient(135deg,#b5d070,#7fa043)','4px','rotate(45deg) scale(.8)'],'Chocolates & Treats':['linear-gradient(135deg,#8a5a3c,#4a2c1a)','5px','none']},
+ D=['radial-gradient(circle at 35% 30%,#f2a04a,#d9731c 70%,#a8500f)','50%','none'];
+function burst(x,y){for(var n=0;n<12;n++){var p=document.createElement('b');p.className='pt';p.style.background=P[n%P.length];p.style.left=x+'px';p.style.top=y+'px';document.body.appendChild(p);
+ var a=Math.PI*2*n/12+Math.random()*.5,d=38+Math.random()*48,r=(Math.random()-.5)*540;
+ (function(p,a,d,r){var an=p.animate([
+  {transform:'translate(0px,0px) rotate(0deg) scale(.5)',opacity:1},
+  {transform:'translate('+Math.cos(a)*d+'px,'+(Math.sin(a)*d-10)+'px) rotate('+r+'deg) scale(1)',opacity:1,offset:.6},
+  {transform:'translate('+Math.cos(a)*d*1.15+'px,'+(Math.sin(a)*d*1.15+22)+'px) rotate('+r*1.3+'deg) scale(.8)',opacity:0}],
+  {duration:760+Math.random()*260,easing:'cubic-bezier(.2,.7,.3,1)',fill:'forwards'});an.onfinish=function(){p.remove()}})(p,a,d,r)}}
+function fly(btn,cat){
+ var fab=document.getElementById('fab');if(!fab||RM.matches||document.querySelectorAll('.fly').length>5)return;
+ var a=btn.getBoundingClientRect(),b=fab.getBoundingClientRect(),s=L[cat]||D,
+  sx=a.left+a.width/2,sy=a.top+a.height/2,ex=b.left+b.width/2,ey=b.top+b.height/2,
+  o=document.createElement('div'),i=document.createElement('i'),T=820,arc=Math.min(140,Math.max(70,Math.abs(sy-ey)*.35+60)),pre=s[2]!=='none'?s[2]+' ':'';
+ o.className='fly';i.style.background=s[0];i.style.borderRadius=s[1];if(s[2]!=='none')i.style.transform=s[2];o.appendChild(i);document.body.appendChild(o);
+ o.animate([{transform:'translate('+sx+'px,'+sy+'px)'},{transform:'translate('+ex+'px,'+ey+'px)'}],{duration:T,easing:'cubic-bezier(.5,0,.75,.6)',fill:'forwards'});
+ i.animate([{transform:pre+'translateY(0px) scale(1.1)'},{transform:pre+'translateY(-'+arc+'px) scale(1)',offset:.42},{transform:pre+'translateY(0px) scale(.35)'}],{duration:T,easing:'ease-in-out',fill:'forwards'})
+  .onfinish=function(){o.remove();burst(ex,ey);if(typeof bump==='function')bump()}}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#list [data-a=add]');if(!b||b.disabled)return;
+ var it=typeof I!=='undefined'?I[b.dataset.i]:null;fly(b,it&&it.c)},true);
+})();
+</script>
+<script>
+(function(){
+var D=document,RM=matchMedia('(prefers-reduced-motion: reduce)').matches,HAS=!!Element.prototype.animate,P=['#ef97bb','#e066ae','#ecb54d','#e05459','#9b4bb0','#f7b6d8'];
+
+/* ===== EDIT HERE: which items get a ribbon (exact item name : ribbon text) ===== */
+var BADGES={'Kutchi Steam Modak':'Best seller','Mohanthal':'Best seller','Sp. Dryfruit Dink Laddoo':'Festival special','Sp. Kesar Khoprapak':'Festival special'};
+
+var PV={};function num(s){return parseFloat(String(s).replace(/[^0-9.]/g,''))}
+
+/* ---- rolling numbers ---- */
+function roll(el,from,to,pre,post){if(RM)return;cancelAnimationFrame(el._r);var t0=performance.now(),d=Math.min(700,260+Math.abs(to-from)*.6);
+ (function f(t){var k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,3);el.textContent=pre+R(from+(to-from)*e)+post;el._self=el.textContent;if(k<1)el._r=requestAnimationFrame(f)})(t0)}
+['tt','ft'].forEach(function(id){var el=D.getElementById(id);if(!el)return;el._v=num(el.textContent)||0;el._self=el.textContent;
+ new MutationObserver(function(){if(el.textContent===el._self)return;var nv=num(el.textContent),ov=el._v;el._v=nv;if(isNaN(nv)||ov===nv){el._self=el.textContent;return}roll(el,ov,nv,'','')}).observe(el,{childList:true,characterData:true,subtree:true})});
+var L=D.getElementById('list');
+function decorate(){if(!L)return;
+ L.querySelectorAll('.card').forEach(function(c){var h=c.querySelector('h3'),t=h&&BADGES[h.textContent];if(t&&!c.querySelector('.rib')){var r=D.createElement('span');r.className='rib '+(t==='Best seller'?'rb':'rf');r.textContent=t;c.appendChild(r)}});
+ L.querySelectorAll('[data-a=add]').forEach(function(b){var i=b.dataset.i,n=num(b.textContent);if(isNaN(n))return;var o=PV[i];if(o!==undefined&&o!==n)roll(b,o,n,'Add to cart \u00b7 \u20b9','');PV[i]=n})}
+var _dr=draw;draw=function(){_dr();decorate()};
+if(L)L.addEventListener('input',function(e){var t=e.target;if(!t.classList||!t.classList.contains('qv'))return;var b=t.closest('.card').querySelector('[data-a=add]'),n=num(b.textContent);if(isNaN(n))return;var o=PV[b.dataset.i];if(o!==undefined&&o!==n)roll(b,o,n,'Add to cart \u00b7 \u20b9','');PV[b.dataset.i]=n});
+decorate();
+
+/* ---- sliding pill behind the category tabs ---- */
+var pv=null;
+function pill(){var c=D.getElementById('chips');if(!c)return;D.documentElement.classList.add('hp');var old=c.querySelector('.pill');if(old)old.remove();
+ var a=c.querySelector('.chip.on');if(!a)return;
+ var n={l:a.offsetLeft,t:a.offsetTop,w:a.offsetWidth,h:a.offsetHeight,c:(getComputedStyle(a).getPropertyValue('--cb')||'#701970').trim()},p=D.createElement('i');p.className='pill';
+ p.style.cssText='left:'+n.l+'px;top:'+n.t+'px;width:'+n.w+'px;height:'+n.h+'px;background:'+n.c;c.insertBefore(p,c.firstChild);
+ if(pv&&HAS&&!RM&&pv.l!==n.l){a.classList.add('wait');p.animate([{left:pv.l+'px',width:pv.w+'px',background:pv.c},{left:n.l+'px',width:n.w+'px',background:n.c}],{duration:420,easing:'cubic-bezier(.3,1.25,.5,1)'});setTimeout(function(){a.classList.remove('wait')},230)}
+ pv=n}
+var _ch=chips;chips=function(){_ch();pill()};chips();
+addEventListener('resize',function(){pv=null;pill()});
+
+/* ---- laddoo rolling along the top stripe as you scroll ---- */
+var hd=D.querySelector('header');
+if(hd){var ro=D.createElement('i');ro.className='roll';hd.appendChild(ro);
+ var mv=function(){var m=D.documentElement.scrollHeight-innerHeight,p=m>0?scrollY/m:0;ro.style.transform='translate('+(p*(hd.clientWidth-26))+'px,0) rotate('+(scrollY*.45)+'deg)'};
+ addEventListener('scroll',mv,{passive:true});addEventListener('resize',mv);mv()}
+
+/* ---- ripple on tap ---- */
+D.addEventListener('pointerdown',function(e){if(RM||!HAS)return;var b=e.target.closest&&e.target.closest('.btn,.chip,.qty button');if(!b||b.disabled)return;
+ var r=b.getBoundingClientRect(),s=Math.max(r.width,r.height)*2.2,x=D.createElement('span');x.className='rpl';
+ x.style.cssText='left:'+(e.clientX-r.left-s/2)+'px;top:'+(e.clientY-r.top-s/2)+'px;width:'+s+'px;height:'+s+'px';b.appendChild(x);
+ x.animate([{transform:'scale(0)',opacity:.3},{transform:'scale(1)',opacity:0}],{duration:620,easing:'ease-out'}).onfinish=function(){x.remove()}},true);
+
+/* ---- petal shower when the "Almost there" screen appears ---- */
+function shower(){if(RM||!HAS)return;var H=innerHeight,W=innerWidth;
+ for(var n=0;n<30;n++)(function(n){var p=D.createElement('b');p.className='pt big';p.style.background=P[n%P.length];D.body.appendChild(p);
+  var x=Math.random()*W,dr=(Math.random()-.5)*160,s=.8+Math.random()*.9,r=Math.random()*360;
+  p.animate([{transform:'translate('+x+'px,-30px) rotate('+r+'deg) scale('+s+')',opacity:1},
+   {transform:'translate('+(x+dr)+'px,'+H*.55+'px) rotate('+(r+240)+'deg) scale('+s+')',opacity:1,offset:.7},
+   {transform:'translate('+(x+dr*1.4)+'px,'+(H+40)+'px) rotate('+(r+420)+'deg) scale('+s+')',opacity:.9}],
+   {duration:2200+Math.random()*1600,delay:Math.random()*700,easing:'cubic-bezier(.3,.1,.5,1)',fill:'both'}).onfinish=function(){p.remove()}})(n)}
+var pan=D.getElementById('pan');
+if(pan)new MutationObserver(function(){var on=pan.classList.contains('sent');if(on&&!pan._s){pan._s=1;shower()}else if(!on)pan._s=0}).observe(pan,{attributes:true,attributeFilter:['class']});
+})();
 </script>
 </body>
 </html>
