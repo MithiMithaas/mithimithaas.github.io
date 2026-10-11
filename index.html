@@ -284,6 +284,17 @@ html.hp .chip.on{background:transparent;box-shadow:none}
 .chip{flex:0 0 auto}
 .chips::after{content:'';flex:0 0 14px}
 .chips.fr{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
+/* ===== mobile "scroll down" pop-up (goes away once the sweets list is reached) ===== */
+#sd{display:none}
+@media(max-width:700px){
+#sd{display:flex;flex-direction:column;align-items:center;position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:36;transform:translate(-50%,24px);opacity:0;pointer-events:none;padding:9px 22px 8px;border:1.5px solid #e066ae;border-radius:99px;background:rgba(255,252,250,.95);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--mar);font:700 .76rem 'DM Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 10px 26px rgba(112,25,112,.22);cursor:pointer;appearance:none;-webkit-appearance:none;transition:opacity .5s,transform .5s cubic-bezier(.2,.8,.2,1)}
+#sd.on{opacity:1;transform:translate(-50%,0);pointer-events:auto;animation:sdb 1.8s ease-in-out 1s infinite}
+#sd i{display:block;width:9px;height:9px;border-right:2.5px solid #e066ae;border-bottom:2.5px solid #e066ae;transform:rotate(45deg);margin-top:-1px;animation:sdc 1.4s ease-in-out infinite}
+#sd i+i{border-color:#ecb54d;margin-top:-6px;animation-delay:.2s}
+}
+@keyframes sdb{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-7px)}}
+@keyframes sdc{0%{opacity:.2;transform:translateY(-3px) rotate(45deg)}50%{opacity:1}100%{opacity:.2;transform:translateY(4px) rotate(45deg)}}
+@media(prefers-reduced-motion:reduce){#sd.on,#sd i{animation:none}}
 </style>
 <script>(function(){var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('intro');
 setTimeout(function(){if(!window.__ready){var l=document.getElementById('loader');if(l)l.style.display='none';d.classList.remove('intro');if(window.__show)window.__show()}},8000)})();
@@ -895,6 +906,19 @@ if(wa)wa.addEventListener('click',function(e){
   iv=setInterval(function(){n--;if(n>0){if(cd)cd.textContent=n}else{done();openWA(u);wa._w=0}},1000)},400)});
 if(wa2)wa2.addEventListener('click',function(){done();wa._w=0});
 var nw=D.getElementById('nw');if(nw)nw.addEventListener('click',function(){done();wa._w=0;if(cdw)cdw.innerHTML='Opening WhatsApp in <b id="cd">3</b>\u2026';cd=D.getElementById('cd')});
+})();
+</script>
+<script>
+(function(){
+var D=document,HE=D.documentElement,el=D.createElement('button'),gone=false,shown=false;
+el.id='sd';el.type='button';el.setAttribute('aria-label','Scroll down to see our sweets');el.innerHTML='<span>Scroll down</span><i></i><i></i>';D.body.appendChild(el);
+function reached(){var l=D.getElementById('list');return !!l&&l.getBoundingClientRect().top<innerHeight*.8}
+function hide(){if(gone)return;gone=true;el.classList.remove('on');setTimeout(function(){el.remove()},700)}
+function show(){if(gone||shown||reached())return;shown=true;el.classList.add('on')}
+addEventListener('scroll',function(){if(!gone&&reached())hide()},{passive:true});
+var t=setInterval(function(){if(!HE.classList.contains('intro')){clearInterval(t);setTimeout(show,900)}},250);
+setTimeout(function(){clearInterval(t);show()},12000);
+el.addEventListener('click',function(){scrollBy({top:Math.round(innerHeight*.72),behavior:'smooth'})});
 })();
 </script>
 </body>
