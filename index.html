@@ -295,6 +295,15 @@ html.hp .chip.on{background:transparent;box-shadow:none}
 @keyframes sdb{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-7px)}}
 @keyframes sdc{0%{opacity:.2;transform:translateY(-3px) rotate(45deg)}50%{opacity:1}100%{opacity:.2;transform:translateY(4px) rotate(45deg)}}
 @media(prefers-reduced-motion:reduce){#sd.on,#sd i{animation:none}}
+/* ===== scroll-down tab moved to the extreme right edge (vertical) ===== */
+@media(max-width:700px){
+#sd{left:auto;right:0;bottom:auto;top:54%;transform:translate(22px,-50%);padding:11px 4px 8px 5px;border-right:0;border-radius:14px 0 0 14px;gap:0;font-size:.62rem;letter-spacing:.2em;box-shadow:-4px 6px 18px rgba(112,25,112,.18)}
+#sd span{writing-mode:vertical-rl;text-orientation:mixed;margin-bottom:6px}
+#sd.on{transform:translate(0,-50%);animation:sdv 1.8s ease-in-out 1s infinite}
+#sd i{width:7px;height:7px;border-width:2px;margin-top:-1px}
+#sd i+i{margin-top:-4px}
+}
+@keyframes sdv{0%,100%{transform:translate(0,-50%)}50%{transform:translate(0,calc(-50% + 7px))}}
 </style>
 <script>(function(){var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('intro');
 setTimeout(function(){if(!window.__ready){var l=document.getElementById('loader');if(l)l.style.display='none';d.classList.remove('intro');if(window.__show)window.__show()}},8000)})();
