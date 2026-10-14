@@ -387,6 +387,31 @@ html[data-s=menu]{--bg:#fffdf3}html[data-s=order]{--bg:#f7fbf0}
 .kt{position:relative;z-index:2;height:1.4em;display:flex;align-items:center;justify-content:center}
 .kt span{position:absolute;font:500 clamp(.95rem,3.4vw,1.2rem) 'Playfair Display',Georgia,serif;font-style:italic;color:var(--pink);opacity:0;letter-spacing:.02em;white-space:nowrap}
 @media(prefers-reduced-motion:reduce){.pz{display:none}.grade{opacity:0}}
+
+/* ===== Mobile-first opening animation only ===== */
+#loader{filter:none;clip-path:none;background:radial-gradient(ellipse at 50% 38%,#fffdf8 0%,#fff2ec 48%,#f9dce9 100%);gap:0;contain:layout paint;touch-action:manipulation;padding:24px 18px calc(24px + env(safe-area-inset-bottom,0px));}
+html.intro .lb{display:none}
+#loader .silk,#loader .pz,#loader .vig,#loader .grain,#loader .flare,#loader .dust,#loader .kt,#loader .ld-rule{display:none}
+#loader .ld-brand2{opacity:1;transform:none;text-align:center;margin:16px 0 22px;font-size:clamp(1.8rem,7vw,2.8rem);letter-spacing:-.025em}
+#loader .ld-brand2 small{font-size:.57rem;letter-spacing:.29em;margin-top:9px}
+#loader .glass{opacity:1;transform:none;background:none;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;padding:0;gap:12px;width:min(250px,70vw)}
+#loader .glass::before{display:none}
+#loader .ld-count{font:500 .75rem 'DM Sans',sans-serif;letter-spacing:.12em;color:#9a6a08;order:2;text-shadow:none}
+#loader .ld-count small{font-size:1em;color:inherit;margin-left:3px}
+#loader .ld-bar{width:100%;height:3px;background:#70197012;order:1}
+#loader .ld-bar i{background:linear-gradient(90deg,#c0408c,#ecb54d);will-change:transform}
+#loader .ld-label{font-size:.56rem;letter-spacing:.22em;order:0}
+#loader .intro-stage{position:relative;flex:0 0 auto;width:min(68vw,300px);aspect-ratio:1;isolation:isolate;}
+#loader .intro-halo{position:absolute;inset:3%;border:1px solid #c0408c24;border-radius:50%;}
+#loader .intro-halo::before,#loader .intro-halo::after{content:'';position:absolute;inset:11%;border:1px dashed #b8873555;border-radius:50%}
+#loader .intro-halo::after{inset:-8%;border:1px solid #ecb54d25}
+#loader .intro-plate{position:absolute;inset:7%;width:86%;height:86%;overflow:visible;will-change:transform,opacity}
+#loader .intro-petal{position:absolute;left:50%;top:50%;width:9px;height:15px;border-radius:80% 0 80% 20%;background:#e066ae;opacity:0;}
+#loader .intro-petal:nth-of-type(3n){background:#ecb54d}
+#loader .intro-spark{position:absolute;width:9px;height:9px;background:#ba8730;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);opacity:0}
+#loader .intro-skip{position:absolute;bottom:calc(22px + env(safe-area-inset-bottom,0px));right:22px;border:1px solid #70197025;border-radius:99px;background:#ffffff80;color:#7d6670;padding:9px 15px;font:500 .63rem 'DM Sans',sans-serif;letter-spacing:.1em;cursor:pointer;-webkit-tap-highlight-color:transparent}
+@media(max-height:620px){#loader .intro-stage{width:min(48vh,220px)}#loader .ld-brand2{margin:8px 0 15px}}
+
 </style>
 <script>(function(){var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('intro');
 setTimeout(function(){if(!window.__ready){var l=document.getElementById('loader');if(l)l.style.display='none';d.classList.remove('intro');if(window.__show)window.__show()}},8000)})();
@@ -834,47 +859,65 @@ function start(){
 
 
 /* ---- intro: counter -> iris wipe -> camera dive ---- */
-function intro(){window.__ready=true;
+function intro(){
+ window.__ready=true;
+ if(!HE.classList.contains('intro')||!ld||ld.style.display==='none'){
+  heads.forEach(split);lock();dive.v=0;flowerIn.v=1;drawLand(1);
+  orbPetals.forEach(m=>m.scale.setScalar(1.15));gsap.set('#webgl',{opacity:1});start();return;
+ }
  heads.forEach(split);lock();
  gsap.set(heads.map(h=>h._c).flat(),{opacity:0});
- gsap.set(secs[0],{opacity:0});gsap.set('.hero .eyebrow,.hero p,.hero .row,.hero .badges',{opacity:0,y:20});
- gsap.fromTo('#webgl',{opacity:0},{opacity:1,duration:2.5,ease:'power2.out'});
- gsap.to(flowerIn,{v:1,duration:3,delay:.8,ease:'power2.out'});
- gsap.to(shower,{v:1,duration:3.8,ease:'none',delay:.4,onUpdate:()=>drawLand(shower.v),onComplete:()=>drawLand(1)});
- orbPetals.forEach((m,i)=>gsap.to(m.scale,{x:1.15,y:1.15,z:1.15,duration:1,ease:'back.out(2.2)',delay:2.6+i*.12}));
- const num=D.getElementById('ldNum'),bar=ld.querySelector('.ld-bar i'),rule=ld.querySelector('.ld-rule'),brand=ld.querySelector('.ld-brand2'),
-  lbT=D.querySelector('.lb.t'),lbB=D.querySelector('.lb.b'),flare=ld.querySelector('.flare'),vig=ld.querySelector('.vig'),grain=ld.querySelector('.grain'),dust=ld.querySelectorAll('.dust'),
-  ktLines=ld.querySelectorAll('.kt span'),glass=ld.querySelector('.glass'),n={v:0};
- window.__hold=false;
- const tl=gsap.timeline()
-  .to([lbT,lbB],{y:'0%',duration:.6,ease:'power3.out'},0)
-  .to(vig,{opacity:1,duration:.7,ease:'power1.out'},0)
-  .to(grain,{opacity:.05,duration:.8},0)
-  .to(dust,{opacity:.8,duration:1,stagger:.03,ease:'power1.out',onStart:()=>{gsap.to(dust,{y:'-=22',duration:3.6,ease:'sine.inOut',yoyo:true,repeat:-1})}},.15)
-  .fromTo(ktLines[0],{opacity:0,y:8,scale:.96},{opacity:1,y:0,scale:1,duration:.45,ease:'power2.out'},.25)
-  .to(ktLines[0],{opacity:0,y:-8,duration:.35,ease:'power1.in'},.95)
-  .fromTo(ktLines[1],{opacity:0,y:8,scale:.96},{opacity:1,y:0,scale:1,duration:.45,ease:'power2.out'},1.1)
-  .to(ktLines[1],{opacity:0,y:-8,duration:.35,ease:'power1.in'},1.75)
-  .fromTo(brand,{opacity:0,y:14,scale:.92},{opacity:1,y:0,scale:1,duration:.7,ease:'back.out(1.6)'},1.9)
-  .to(flare,{x:'260%',duration:1.1,ease:'power2.inOut'},1.95)
-  .to(rule,{width:'120px',duration:.8,ease:'power2.inOut'},2.3)
-  .fromTo(glass,{opacity:0,scale:.94,y:10},{opacity:1,scale:1,y:0,duration:.6,ease:'power2.out'},2.55)
-  .to(n,{v:100,duration:2.1,ease:'power1.inOut',onUpdate:()=>{num.textContent=Math.round(n.v);bar.style.transform='scaleX('+n.v/100+')'}},2.2)
-  .to(ld,{filter:'saturate(1.18) brightness(1.03) hue-rotate(0deg)',duration:2.1,ease:'power1.inOut'},2.2)
-  .to('.ld-count',{textShadow:'0 0 26px rgba(236,181,77,.55),0 0 6px rgba(112,25,112,.25)',duration:.6,ease:'power2.out'},3.7)
-  .to(flare,{x:'-260%',duration:0,ease:'none'},3.6)
-  .to(flare,{x:'260%',duration:1,ease:'power2.inOut'},3.7)
-  .to(ld.querySelectorAll('.ld-brand2,.ld-rule,.ld-count,.ld-bar,.ld-label'),{opacity:0,y:-10,duration:.3,stagger:.04},'>0.05')
-  .to(dust,{opacity:0,duration:.4},'<')
-  .to(vig,{opacity:0,duration:.5},'<')
-  .to([lbT,lbB],{duration:.1},'<')
-  .to(lbT,{y:'-100%',duration:.55,ease:'power3.in'},'<')
-  .to(lbB,{y:'100%',duration:.55,ease:'power3.in'},'<')
-  .fromTo(ld,{clipPath:'circle(150% at 50% 50%)'},{clipPath:'circle(0% at 50% 50%)',duration:1.1,ease:'expo.inOut',onComplete:()=>{ld.remove();lbT.remove();lbB.remove()}},'<0.1')
-  .to(dive,{v:0,duration:2.4,ease:'expo.out'},'<')
-  .add(start,'<0.75');
- ld.addEventListener('click',()=>tl.timeScale(6))}
-Promise.all([D.fonts?D.fonts.ready:0,new Promise(r=>D.readyState==='complete'?r():addEventListener('load',r))]).then(intro);
+ gsap.set(secs[0],{opacity:0});
+ gsap.set('.hero .eyebrow,.hero p,.hero .row,.hero .badges',{opacity:0,y:20});
+ // Do not render the hidden 3D background during the opening sequence.
+ window.__hold=true;
+ const stage=D.createElement('div');stage.className='intro-stage';stage.setAttribute('aria-hidden','true');
+ const halo=D.createElement('div');halo.className='intro-halo';stage.appendChild(halo);
+ const plate=D.querySelector('.hero .art').cloneNode(true);
+ plate.removeAttribute('class');plate.classList.add('intro-plate');
+ // Keep SVG gradient identifiers unique without touching the original artwork.
+ plate.querySelectorAll('[id]').forEach(el=>{const old=el.id;el.id='opening-'+old;
+  plate.querySelectorAll('[fill]').forEach(n=>{if(n.getAttribute('fill')==='url(#'+old+')')n.setAttribute('fill','url(#opening-'+old+')')});});
+ stage.appendChild(plate);
+ const petals=[],sparks=[],count=mob()?12:18;
+ for(let i=0;i<count;i++){const p=D.createElement('i');p.className='intro-petal';stage.appendChild(p);petals.push(p)}
+ for(let i=0;i<6;i++){const p=D.createElement('i');p.className='intro-spark';p.style.left=(12+(i*37)%78)+'%';p.style.top=(8+(i*23)%76)+'%';stage.appendChild(p);sparks.push(p)}
+ ld.insertBefore(stage,ld.querySelector('.ld-brand2'));
+ ld.removeAttribute('onclick');
+ const skip=D.createElement('button');skip.type='button';skip.className='intro-skip';skip.textContent='SKIP INTRO ↗';skip.setAttribute('aria-label','Skip opening animation');ld.appendChild(skip);
+ const num=D.getElementById('ldNum'),bar=ld.querySelector('.ld-bar i'),n={v:0};
+ let finished=false;
+ const previousRatio=renderer.getPixelRatio();
+ if(mob())renderer.setPixelRatio(Math.min(previousRatio,1));
+ function finish(){
+  if(finished)return;finished=true;clearTimeout(safety);
+  tl.kill();window.__hold=false;dive.v=0;flowerIn.v=1;drawLand(1);
+  orbPetals.forEach(m=>m.scale.setScalar(1.15));
+  if(renderer.getPixelRatio()!==previousRatio){renderer.setPixelRatio(previousRatio);renderer.setSize(W(),H(),false)}
+  HE.classList.remove('intro');ld.remove();D.querySelectorAll('.lb').forEach(el=>el.remove());
+  gsap.set('#webgl',{opacity:1});start();
+ }
+ const tl=gsap.timeline({onComplete:finish,defaults:{ease:'power3.out'}});
+ tl.fromTo(halo,{scale:.68,opacity:0,rotation:-25},{scale:1,opacity:1,rotation:0,duration:1.25},0)
+  .fromTo(plate,{y:65,scale:.5,rotation:-22,opacity:0},{y:0,scale:1,rotation:0,opacity:1,duration:1.35,ease:'back.out(1.25)'},.12)
+  .fromTo(ld.querySelector('.ld-brand2'),{opacity:0,y:20},{opacity:1,y:0,duration:.75},.55)
+  .fromTo(ld.querySelector('.glass'),{opacity:0,y:15},{opacity:1,y:0,duration:.6},.85)
+  .to(n,{v:100,duration:2.4,ease:'power1.inOut',onUpdate:()=>{const value=Math.round(n.v);if(num.textContent!==String(value))num.textContent=value;bar.style.transform='scaleX('+n.v/100+')'}},.35);
+ petals.forEach((p,i)=>{
+  const a=i/count*Math.PI*2,r=stage.clientWidth*(.39+(i%3)*.035),x=Math.cos(a)*r,y=Math.sin(a)*r;
+  tl.fromTo(p,{x:x*1.65,y:y*1.65-25,rotation:i*47,scale:.3,opacity:0},{x:x,y:y,rotation:i*47+110,scale:1,opacity:.85,duration:1.1,ease:'power2.out'},.25+i*.035)
+   .to(p,{x:x*.88,y:y+18,rotation:i*47+155,opacity:0,duration:.7,ease:'power1.in'},2.1+i*.012);
+ });
+ tl.fromTo(sparks,{opacity:0,scale:0,rotation:0},{opacity:.8,scale:1,rotation:90,stagger:.09,duration:.5},.9)
+  .to(sparks,{opacity:0,scale:.4,stagger:.04,duration:.4},2.25)
+  .to(plate,{y:-7,rotation:3,duration:.85,ease:'sine.inOut'},1.45)
+  .to([stage,ld.querySelector('.ld-brand2'),ld.querySelector('.glass'),skip],{opacity:0,y:-18,duration:.38,stagger:.035,ease:'power2.in'},2.95)
+  .to(ld,{opacity:0,duration:.45,ease:'power2.inOut'},3.2);
+ skip.addEventListener('click',finish);
+ const safety=setTimeout(finish,5500);
+}
+Promise.all([D.fonts?Promise.race([D.fonts.ready,new Promise(r=>setTimeout(r,700))]):0,
+ new Promise(r=>D.readyState==='complete'?r():addEventListener('load',r,{once:true}))]).then(intro);
 
 /* ---- resize ---- */
 let lw=W(),lh=H();
